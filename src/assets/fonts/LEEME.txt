@@ -1,0 +1,2 @@
+Coloca aquí KG The Fighter (.ttf, .otf, .woff o .woff2). El nombre del archivo debe contener "KGTheFighter" o "KG The Fighter".
+Si no existe, el cupón usa Caveat como sustituto del acento manuscrito.

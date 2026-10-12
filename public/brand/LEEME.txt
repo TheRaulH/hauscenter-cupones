@@ -1,0 +1,5 @@
+Coloca aquí los archivos OFICIALES del logo (no se redibuja):
+  imagotipo-blanco.png  -> versión blanca (se usa sobre azul: cupón y cabecera)
+  imagotipo-azul.png    -> versión azul (se usa sobre fondos claros: login)
+  isotipo.png           -> favicon
+Mientras no existan, la app muestra el nombre "Hauscenter" como texto provisional.
