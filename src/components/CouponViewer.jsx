@@ -5,6 +5,7 @@ import ScaledCoupon from './ScaledCoupon';
 import FullscreenCoupon from './FullscreenCoupon';
 import { canCopyImage, copyImage, copyText, couponToBlob, downloadBlob, shareImage } from '../lib/share';
 import { sounds } from '../lib/sound';
+import { validUntil } from '../lib/format';
 
 // Cupón + acciones. La imagen se prepara apenas se muestra, así "Compartir" responde al instante.
 export default function CouponViewer({ coupon }) {
@@ -33,7 +34,7 @@ export default function CouponViewer({ coupon }) {
   }, [coupon.id]);
 
   const filename = `cupon-${coupon.code}.png`;
-  const text = `Cupón ${coupon.code}: ${coupon.discount_percent}% de descuento en ${coupon.applies_to} · Hauscenter`;
+  const text = `Cupón ${coupon.code}: ${coupon.discount_percent}% de descuento en ${coupon.applies_to}. Válido hasta ${validUntil(coupon.created_at)}. No aplica oferta sobre oferta. · Hauscenter`;
 
   const run = (fn) => async () => {
     try { await fn(); } catch (e) { console.error(e); sounds.error(); toast.error('No se pudo completar la acción'); }
