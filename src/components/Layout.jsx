@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { BarChart3, History, LogOut, Percent, Ticket } from 'lucide-react';
+import { BadgeCheck, BarChart3, Dices, History, LogOut, Percent, Ticket } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import BrandLogo from './BrandLogo';
 import SoundToggle from './SoundToggle';
@@ -19,7 +19,9 @@ export default function Layout() {
           <BrandLogo variant="blanco" height={36} />
           <nav className="mx-2 flex flex-1 gap-1 overflow-x-auto" aria-label="Principal">
             <NavLink to="/" end className={linkClass}><Ticket size={18} /> Generar</NavLink>
+            <NavLink to="/canjear" className={linkClass}><BadgeCheck size={18} /> Canjear</NavLink>
             <NavLink to="/historial" className={linkClass}><History size={18} /> Historial</NavLink>
+            <NavLink to="/sorteo" className={linkClass}><Dices size={18} /> Sorteo</NavLink>
             {isAdmin && (
               <>
                 <NavLink to="/panel" className={linkClass}><BarChart3 size={18} /> Panel</NavLink>
