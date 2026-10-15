@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
-import { AtSign, Loader2, Plus, Sparkles } from 'lucide-react';
+import { AtSign, Loader2, MapPin, Plus, Sparkles } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { createCoupon } from '../lib/coupons';
 import { normalizeTiktok } from '../lib/format';
@@ -9,6 +9,8 @@ import { sounds } from '../lib/sound';
 import DiscountPicker from '../components/DiscountPicker';
 import CouponViewer from '../components/CouponViewer';
 import ScaledCoupon from '../components/ScaledCoupon';
+import BranchPicker from '../components/BranchPicker';
+import { useBranch } from '../lib/branch';
 
 const COLORS = ['#E76100', '#F3E4CD', '#123B64', '#DCE3EB'];
 
@@ -19,6 +21,8 @@ export default function Generator() {
   const [tiktok, setTiktok] = useState('');
   const [busy, setBusy] = useState(false);
   const [coupon, setCoupon] = useState(null);
+  const [branch, setBranch] = useBranch();
+  const [changingBranch, setChangingBranch] = useState(false);
 
   useEffect(() => {
     supabase
@@ -51,10 +55,10 @@ export default function Generator() {
   );
 
   const generate = async () => {
-    if (!selected || tiktokInvalid || busy) return;
+    if (!selected || !branch || tiktokInvalid || busy) return;
     setBusy(true);
     try {
-      const row = await createCoupon({ discountId: selected.id, tiktok: tiktokValue });
+      const row = await createCoupon({ discountId: selected.id, tiktok: tiktokValue, branch });
       setCoupon(row);
       sounds.success();
       confetti({ particleCount: 120, spread: 80, origin: { y: 0.4 }, colors: COLORS, disableForReducedMotion: true });
@@ -73,6 +77,16 @@ export default function Generator() {
     setCoupon(null);
     setTiktok('');
   };
+
+  if (!branch || changingBranch) {
+    return (
+      <BranchPicker
+        current={branch}
+        onSelect={(b) => { sounds.select(); setBranch(b); setChangingBranch(false); }}
+        onCancel={branch ? () => setChangingBranch(false) : undefined}
+      />
+    );
+  }
 
   return (
     <div className="grid items-start gap-8 md:grid-cols-[minmax(0,1fr)_minmax(0,420px)]">
@@ -95,6 +109,9 @@ export default function Generator() {
             <div>
               <h1 className="text-3xl font-bold">Generar cupón</h1>
               <p className="mt-1 text-haus-azul/70">Elige el descuento que vas a dar en el live.</p>
+              <button onClick={() => setChangingBranch(true)} className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-haus-apoyo px-3 py-1.5 text-sm font-semibold hover:brightness-95">
+                <MapPin size={15} /> Sucursal {branch} · Cambiar
+              </button>
             </div>
 
             {loading ? (
