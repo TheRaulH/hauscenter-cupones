@@ -8,6 +8,8 @@ import Generator from './pages/Generator';
 import History from './pages/History';
 import Dashboard from './pages/Dashboard';
 import Discounts from './pages/Discounts';
+import Sorteo from './pages/Sorteo';
+import Canjear from './pages/Canjear';
 
 export default function App() {
   if (!isConfigured) return <SetupNotice />;
@@ -18,7 +20,9 @@ export default function App() {
       <Route element={<ProtectedRoute />}>
         <Route element={<Layout />}>
           <Route index element={<Generator />} />
+          <Route path="canjear" element={<Canjear />} />
           <Route path="historial" element={<History />} />
+          <Route path="sorteo" element={<Sorteo />} />
           <Route element={<ProtectedRoute roles={['admin']} />}>
             <Route path="panel" element={<Dashboard />} />
             <Route path="descuentos" element={<Discounts />} />
